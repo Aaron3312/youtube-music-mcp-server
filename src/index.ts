@@ -13,7 +13,7 @@ import {
 // Configuration schema for user-level settings
 export const configSchema = z.object({
   debug: z.boolean().default(false).describe("Enable debug logging"),
-  cookies: z.string().min(1).describe("YouTube Music cookies for authentication (required)"),
+  cookies: z.string().optional().describe("YouTube Music cookies for authentication (required for full functionality)"),
 });
 
 export default function createServer({
@@ -37,15 +37,22 @@ export default function createServer({
       try {
         await ytmusicClient.initialize();
 
-        // Authenticate with required cookies
-        await ytmusicClient.authenticate(config.cookies);
+        // Authenticate with cookies if provided
+        if (config.cookies && config.cookies.trim().length > 0) {
+          await ytmusicClient.authenticate(config.cookies);
+          if (config.debug) {
+            console.log("YouTube Music client initialized and authenticated successfully");
+          }
+        } else {
+          if (config.debug) {
+            console.log("YouTube Music client initialized without authentication (cookies not provided)");
+          }
+        }
 
         initialized = true;
-        if (config.debug) {
-          console.log("YouTube Music client initialized successfully");
-        }
       } catch (error) {
         console.error("Failed to initialize YouTube Music client:", error);
+        // Don't throw - allow server to start even if auth fails
       }
     }
   };
@@ -60,6 +67,16 @@ export default function createServer({
     },
     async (args) => {
       await initializeClient();
+
+      // Check if cookies are configured
+      if (!config.cookies || config.cookies.trim().length === 0) {
+        return {
+          content: [{
+            type: "text",
+            text: "❌ **Authentication Required**\n\nYouTube Music cookies must be configured to use this server.\n\nPlease:\n1. Configure your cookies in the server settings\n2. Get cookies from music.youtube.com (see README for instructions)\n3. Restart the server after configuration"
+          }],
+        };
+      }
 
       try {
         const results = await ytmusicClient.search(args);
@@ -132,6 +149,16 @@ export default function createServer({
     async (args) => {
       await initializeClient();
 
+      // Check if cookies are configured
+      if (!config.cookies || config.cookies.trim().length === 0) {
+        return {
+          content: [{
+            type: "text",
+            text: "❌ **Authentication Required**\n\nYouTube Music cookies must be configured to generate playlists.\n\nPlease:\n1. Configure your cookies in the server settings\n2. Get cookies from music.youtube.com (see README for instructions)\n3. Restart the server after configuration"
+          }],
+        };
+      }
+
       try {
         const suggestions = await playlistCurator.generatePlaylistSuggestions(
           undefined,
@@ -194,6 +221,16 @@ export default function createServer({
     },
     async (args) => {
       await initializeClient();
+
+      // Check if cookies are configured
+      if (!config.cookies || config.cookies.trim().length === 0) {
+        return {
+          content: [{
+            type: "text",
+            text: "❌ **Authentication Required**\n\nYouTube Music cookies must be configured to create smart playlists.\n\nPlease:\n1. Configure your cookies in the server settings\n2. Get cookies from music.youtube.com (see README for instructions)\n3. Restart the server after configuration"
+          }],
+        };
+      }
 
       try {
         const playlist = await playlistCurator.createSmartPlaylist(
