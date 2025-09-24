@@ -2,6 +2,8 @@
 
 A Model Context Protocol (MCP) server that integrates YouTube Music functionality with Claude AI. Search for music, generate intelligent playlist suggestions, and create curated playlists based on mood, decade, or natural language descriptions.
 
+**6 Tools Available**: `search`, `generate_playlist_suggestions`, `create_smart_playlist`, `authenticate`, `get_auth_status`, `clear_auth`
+
 ## Features
 
 - 🔍 **Search YouTube Music**: Find songs, artists, albums, and playlists
@@ -10,31 +12,40 @@ A Model Context Protocol (MCP) server that integrates YouTube Music functionalit
 - 🔐 **Authentication Support**: Access library features with YouTube Music cookies
 - 🧠 **AI-Powered**: Leverages YouTube Music APIs with intelligent recommendation algorithms
 
-## Available Tools
+## Tools
 
-### `search`
-Search YouTube Music for content with customizable filters:
-- Query any search term
-- Filter by type (songs, artists, albums, playlists, all)
-- Limit results (1-50)
+This server provides the following MCP tools:
 
-### `generate_playlist_suggestions`
-Generate curated playlist suggestions:
-- **Mood-based**: energetic, chill, focus, party, workout, sleep
-- **Decade-based**: 1960s-2020s throwback playlists
-- **Duration control**: Target playlist length in minutes
-- **Content filtering**: Include/exclude explicit content
+### search
+Search YouTube Music for songs, artists, albums, or playlists
+- **Parameters**: query (string), type (songs/artists/albums/playlists/all), limit (1-50)
+- **Returns**: Formatted search results with titles, artists, durations, and IDs
 
-### `create_smart_playlist`
-Create playlists from natural language descriptions:
-- "Upbeat 80s workout music"
-- "Chill study background music"
-- "Party dance hits from the 2000s"
+### generate_playlist_suggestions
+Generate curated playlist suggestions based on mood or decade
+- **Parameters**: mood (energetic/chill/focus/party/workout/sleep), decade (1960-2020), durationMinutes, includeExplicit
+- **Returns**: Multiple playlist suggestions with reasoning and track lists
 
-### Authentication Tools
-- `authenticate`: Connect your YouTube Music account using cookies
-- `get_auth_status`: Check current authentication status
-- `clear_auth`: Remove stored credentials
+### create_smart_playlist
+Create playlists from natural language descriptions
+- **Parameters**: description (string), targetLength (number, default 25)
+- **Returns**: Smart playlist with curated tracks matching the description
+- **Examples**: "Upbeat 80s workout music", "Chill study background music"
+
+### authenticate
+Authenticate with YouTube Music using cookies
+- **Parameters**: cookies (string)
+- **Returns**: Authentication success/failure status
+
+### get_auth_status
+Check current YouTube Music authentication status
+- **Parameters**: none
+- **Returns**: Authentication status and credential verification
+
+### clear_auth
+Clear stored YouTube Music authentication credentials
+- **Parameters**: none
+- **Returns**: Confirmation of credential removal
 
 ## Configuration
 
