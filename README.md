@@ -38,21 +38,48 @@ Create playlists from natural language descriptions:
 
 ## Configuration
 
+⚠️ **Authentication Required**: This server requires YouTube Music cookies to function.
+
 Configure the server through `smithery.yaml`:
 
 ```yaml
 config:
   debug: true/false          # Enable debug logging
-  cookies: "your_cookies"    # YouTube Music authentication cookies
+  cookies: "your_cookies"    # YouTube Music authentication cookies (REQUIRED)
 ```
 
-## Authentication
+## Authentication Setup
 
-To access library features and create actual playlists, you'll need to authenticate:
+**Required**: You must provide YouTube Music cookies for the server to work:
 
 1. Log into [music.youtube.com](https://music.youtube.com) in your browser
-2. Copy the cookie string from your browser's developer tools
-3. Use the `authenticate` tool or add to your configuration
+2. Copy the cookie string from your browser's developer tools (see detailed steps below)
+3. Add the cookies to your Smithery server configuration
+
+### Getting YouTube Music Cookies
+
+**Method 1: Browser Developer Tools (Recommended)**
+1. Open [music.youtube.com](https://music.youtube.com) and log in
+2. Press `F12` to open Developer Tools
+3. Go to **Network** tab
+4. Refresh the page or search for music
+5. Click on any request to `music.youtube.com`
+6. Find the `Cookie:` header in Request Headers
+7. Copy the entire cookie string
+
+**Method 2: Browser Extension**
+1. Install "Cookie Editor" extension
+2. Go to YouTube Music and log in
+3. Click the extension icon
+4. Export cookies for `music.youtube.com`
+5. Copy the formatted cookie string
+
+**Cookie Format Example:**
+```
+__Secure-1PSID=g.a000...; __Secure-1PAPISID=abc123...; SAPISID=def456...; HSID=xyz789...
+```
+
+⚠️ **Security**: Keep your cookies secure - they're like passwords for your account.
 
 ## Development
 

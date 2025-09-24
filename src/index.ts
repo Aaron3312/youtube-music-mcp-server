@@ -13,7 +13,7 @@ import {
 // Configuration schema for user-level settings
 export const configSchema = z.object({
   debug: z.boolean().default(false).describe("Enable debug logging"),
-  cookies: z.string().optional().describe("YouTube Music cookies for authentication"),
+  cookies: z.string().min(1).describe("YouTube Music cookies for authentication (required)"),
 });
 
 export default function createServer({
@@ -37,10 +37,8 @@ export default function createServer({
       try {
         await ytmusicClient.initialize();
 
-        // Authenticate if cookies are provided in config
-        if (config.cookies) {
-          await ytmusicClient.authenticate(config.cookies);
-        }
+        // Authenticate with required cookies
+        await ytmusicClient.authenticate(config.cookies);
 
         initialized = true;
         if (config.debug) {
