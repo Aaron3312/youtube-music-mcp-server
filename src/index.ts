@@ -11,6 +11,7 @@ import { registerSystemTools } from './tools/system.js';
 import { registerAdaptivePlaylistTools } from './tools/adaptive-playlist.js';
 import { registerReccoBeatsTools } from './tools/reccobeats.js';
 import { registerWorkflowPrompts } from './tools/prompts.js';
+import { registerResources } from './tools/resources.js';
 import { YouTubeMusicClient } from './youtube-music/client.js';
 import { YouTubeDataClient } from './youtube-data/client.js';
 import { MusicBrainzClient } from './musicbrainz/client.js';
@@ -76,6 +77,7 @@ export default function createServer(config?: Config) {
   registerReccoBeatsTools(server, context);
   registerSystemTools(server, context);
   registerWorkflowPrompts(server);
+  registerResources(server);
 
   return server;
 }
