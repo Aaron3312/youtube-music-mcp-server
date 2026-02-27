@@ -75,7 +75,8 @@ function loadConfig() {
 
     sessionTtl: parseInt(process.env['SESSION_TTL'] ?? '3600', 10),
 
-    tokenStoragePath: process.env['TOKEN_STORAGE_PATH'] ?? '/data/tokens.json',
+    tokenStoragePath: process.env['TOKEN_STORAGE_PATH'] ??
+      `${process.env['HOME'] ?? '/tmp'}/.youtube-music-mcp/tokens.json`,
 
     bypassAuth: process.env['BYPASS_AUTH_FOR_TESTING'] === 'true',
   };
