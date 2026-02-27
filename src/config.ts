@@ -18,7 +18,7 @@ const ConfigSchema = z.object({
   googleRedirectUri: z.string().url().optional(),
 
   // Encryption
-  encryptionKey: z.string().min(32).optional(),
+  encryptionKey: z.string().min(32),
 
   // MusicBrainz (has strict 1 req/sec limit enforced by their API)
   musicBrainzRateLimit: z.number().default(1000), // 1 request per second
@@ -87,6 +87,9 @@ function loadConfig() {
     }
     if (!rawConfig.googleClientSecret) {
       rawConfig.googleClientSecret = 'bypass-testing';
+    }
+    if (!rawConfig.encryptionKey) {
+      rawConfig.encryptionKey = 'bypass-testing-insecure-key-not-for-production!!';
     }
   }
 
