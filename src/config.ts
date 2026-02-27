@@ -91,6 +91,12 @@ function loadConfig() {
     if (!rawConfig.encryptionKey) {
       rawConfig.encryptionKey = 'bypass-testing-insecure-key-not-for-production!!';
     }
+    if (!rawConfig.spotifyClientId) {
+      rawConfig.spotifyClientId = 'bypass-testing';
+    }
+    if (!rawConfig.spotifyClientSecret) {
+      rawConfig.spotifyClientSecret = 'bypass-testing';
+    }
   }
 
   const result = ConfigSchema.safeParse(rawConfig);

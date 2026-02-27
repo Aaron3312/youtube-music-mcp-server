@@ -150,7 +150,6 @@ export class YouTubeMusicClient {
     body: Record<string, unknown>
   ): Promise<T> {
     // InnerTube API uses API key, not OAuth Bearer tokens
-    // The original working implementation did not use OAuth for these requests
     const headers: Record<string, string> = {};
 
     try {
